@@ -78,6 +78,7 @@ void Display(vector<int> v)
 int main()
 {
     string strA, strB;
+    int enter1,enter2;
     int digit;
     vector<int> num1, num2, ans; //num1 vector, num2 vector, answer vector
     
@@ -85,6 +86,7 @@ int main()
     cin >> strA;
     for(int i = 0; i < strA.size(); i++)
     {
+	enter1=(int)strA[i]-48;
         num1.push_back(static_cast<int>(strA[i])-48);
     }
     cout << "Please enter the second number: " << endl;//input second num
@@ -92,7 +94,8 @@ int main()
     cin >> strB;
     for(int i = 0; i < strB.size(); i++)
     {
-        num2.push_back(static_cast<int>(strB[i])-48);//fill vector 2
+	enter2=(int)strB[i]-48;
+	num2.push_back(enter2);//fill vector 2
     }
     cout << "1--------"<<endl;
     Display(num1);
