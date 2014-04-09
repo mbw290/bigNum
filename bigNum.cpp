@@ -49,20 +49,23 @@ vector<int> Add(vector<int> num1, vector<int> num2)
     {
         if(j == 0)
         {
-            if(ans[j] > 10)
+            if(ans[j] >= 10)
             {
-                carryBit = ans[j]%10;
-                ans[j] -= 10;
-                ans.insert(ans.begin(), carryBit);
+                carryBit = ans[j]/10;
+                ans[j] = ans[j]-10;
+		ans[j-1]=ans[j-1]+carryBit;
+                //ans.insert(ans.begin(), carryBit);
             }
         }
         else
-        {
-            if(ans[j] > 10)
+         {
+	
+            if(ans[j] >= 10)
             {
-                carryBit = ans[j]%10;
-                ans[j] -= 10;
-                ans[j+1] += carryBit;
+                carryBit = ans[j]/10;
+		cout << "CARRY BIT IS: " << carryBit << "\n";
+                ans[j] = ans[j]-10;
+                ans[j-1] = ans[j-1]+carryBit;
             }
         }
     }
@@ -105,5 +108,6 @@ int main()
     Display(num2);
     cout << "\n3--------"<<endl;
     Display(ans);
+    cout << "\n";
     
 }
