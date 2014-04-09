@@ -1,106 +1,45 @@
 #include<iostream>
 #include <stdio.h>
 #include <string>
+#include <vector>
 using namespace std;
 
 class bigNum
 {
-  public:
+public:
     int digit;
 };
-
-//we need a link to point to the puppy and the next item
-//something to hold the list and methods to add to the list and remove etc.
-class Link
+bool check(vector<int> num1, vector<int> num2)
 {
-  public:
-   bigNum *bNum;
-   Link *Next;
-};
+    bool test;
+    if(num1.size() !=0 || num2.size()!= 0)
+    {test = true;}
+    else
+    {test = false;}
+    return test;
+}
 
-class LinkedList
+void Add(vector<int> num1, vector<int> num2, vector<int> ans)
 {
-  private:
-    Link *First;
-  public:
-    LinkedList()
+    int carryBit;
+    for(int i = 0; check(num1, num2) == true; i++)
     {
-      First = NULL;
+        ans[i] = num1[i] + num2[i];
     }
-
-   void AddDigit(int x)
-   {
-     Link *newLink = new Link;
-     bigNum *newNum = new bigNum;
-     //bignum pointer is now pointing to our new bignum
-     newLink->bNum=newNum;
-     newNum->digit=x;
-     newLink->Next=First; //makes next null
-     First=newLink;
-  }
-
-   void AddDigitEnd(int x)
-   {
-     Link *lastItem=new Link;
-     Link *newNode=new Link;
-     bigNum *newNum = new bigNum;
-     lastItem=First;
-       while (lastItem->Next != NULL)
-       {
-         lastItem=lastItem->Next;
-       }
-       lastItem->Next=newNode;
-       newNode->bNum=newNum;
-       newNum->digit=x;
-       newNode->Next=NULL; 
+    for(unsigned long j = ans.size(); j > 0; j--)
+    {
+        if(ans[j+1] != NULL)
+        {
+            if(ans[j] > 10)
+            {
+                carryBit = ans[j]%10;
+                ans[j] -= 10;
+                ans[j+1] += carryBit;
+            }
+        }
     }
-
-  void RemoveDigit()
-  {
-   delete First->bNum;
-   First=First->Next;
-  }
-
-  void RemoveList(LinkedList LL)
-  {
-     Link *current=new Link;
-     Link *temp = new Link;
-     current=First;
-       while (current != NULL)
-       {
-       temp=current->Next; 
-       delete current->bNum;
-       delete current;
-       current=temp;
-       }
-    delete current->bNum;
-    delete current;
-  }
-  
-  void Display()
-  {
-   Link *current=First;
-   while (current != NULL)
-   {
-     cout << "Digit: " << current->bNum->digit << "\n";
-     current = current->Next;
-   }
-  }
-};
-
-
+}
 int main()
 {
-
-string strA,strB;
-LinkedList num1,num2;
-int iValue;
-cout << "Please enter the first number: " << "\n"; cin >> strA;
-	for (int i=0;i<strA.length();i++)
-	{
-	iValue=strA[i]-48;
-	num1.AddDigit(iValue);
-	cout <<  iValue <<"\n";
-	}
-return 0;
+    
 }
