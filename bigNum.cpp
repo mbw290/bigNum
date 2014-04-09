@@ -19,8 +19,9 @@ bool check(vector<int> num1, vector<int> num2)
     return test;
 }
 
-void Add(vector<int> num1, vector<int> num2, vector<int> ans)
+vector<int> Add(vector<int> num1, vector<int> num2)
 {
+    vector<int> ans;
     int carryBit, sum;
     unsigned long max;
     if(num1.size() > num2.size())
@@ -65,6 +66,7 @@ void Add(vector<int> num1, vector<int> num2, vector<int> ans)
             }
         }
     }
+return ans;
 }
 
 void Display(vector<int> v)
@@ -89,19 +91,18 @@ int main()
 	enter1=(int)strA[i]-48;
         num1.push_back(enter1);
     }
-    cout << "Please enter the second number: " << endl;//input second num
-    
+    cout << "Please enter the second number: " << endl;//input second num    
     cin >> strB;
     for(int i = 0; i < strB.size(); i++)
     {
 	enter2=(int)strB[i]-48;
 	num2.push_back(enter2);//fill vector 2
     }
+    ans=Add(num1,num2);
     cout << "1--------"<<endl;
     Display(num1);
     cout << "\n2--------"<<endl;
     Display(num2);
-    Add(num1, num2, ans);
     cout << "\n3--------"<<endl;
     Display(ans);
     
