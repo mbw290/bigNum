@@ -87,7 +87,7 @@ int main()
     for(int i = 0; i < strA.size(); i++)
     {
 	enter1=(int)strA[i]-48;
-        num1.push_back(static_cast<int>(strA[i])-48);
+        num1.push_back(enter1);
     }
     cout << "Please enter the second number: " << endl;//input second num
     
