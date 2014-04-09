@@ -22,17 +22,26 @@ bool check(vector<int> num1, vector<int> num2)
 void Add(vector<int> num1, vector<int> num2, vector<int> ans)
 {
     int carryBit, sum;
-    for(int i = 0; check(num1, num2) == true; i++)
+    unsigned long max;
+    if(num1.size() > num2.size())
     {
-        if(num1.size() == 0)
+        max = num1.size();
+    }
+    else
+    {
+        max = num2.size();
+    }
+    for(int i = 0; i < max; i++)
+    {
+        if(num1.size() < num2.size())
         {
             num1.insert(num1.begin(), 0);
         }
-        if(num2.size() == 0)
+        if(num2.size() < num1.size())
         {
             num2.insert(num2.begin(), 0);
         }
-        sum = num1[i] + num2[i];
+        sum = num1.at(i) + num2.at(i);
         ans.push_back(sum);
     }
     for(unsigned long j = ans.size(); j > 0; j--)
@@ -90,7 +99,7 @@ int main()
     cout << "\n2--------"<<endl;
     Display(num2);
     Add(num1, num2, ans);
-    cout << "3--------"<<endl;
+    cout << "\n3--------"<<endl;
     Display(ans);
     
 }
