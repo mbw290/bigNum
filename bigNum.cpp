@@ -21,14 +21,32 @@ bool check(vector<int> num1, vector<int> num2)
 
 void Add(vector<int> num1, vector<int> num2, vector<int> ans)
 {
-    int carryBit;
+    int carryBit, sum;
     for(int i = 0; check(num1, num2) == true; i++)
     {
-        ans[i] = num1[i] + num2[i];
+        if(num1.size() == 0)
+        {
+            num1.insert(num1.begin(), 0);
+        }
+        if(num2.size() == 0)
+        {
+            num2.insert(num2.begin(), 0);
+        }
+        sum = num1[i] + num2[i];
+        ans.push_back(sum);
     }
     for(unsigned long j = ans.size(); j > 0; j--)
     {
-        if(ans[j+1] != NULL)
+        if(j == 0)
+        {
+            if(ans[j] > 10)
+            {
+                carryBit = ans[j]%10;
+                ans[j] -= 10;
+                ans.insert(ans.begin(), carryBit);
+            }
+        }
+        else
         {
             if(ans[j] > 10)
             {
@@ -39,7 +57,40 @@ void Add(vector<int> num1, vector<int> num2, vector<int> ans)
         }
     }
 }
+
+void Display(vector<int> v)
+{
+    for(int i = 0; i < v.size(); i++)
+    {
+        cout << v[i];
+    }
+}
+
 int main()
 {
+    string strA, strB;
+    int digit;
+    vector<int> num1, num2, ans; //num1 vector, num2 vector, answer vector
+    
+    cout << "Please enter the first number: " << endl;//input first num
+    cin >> strA;
+    for(int i = 0; i < strA.size(); i++)
+    {
+        num1.push_back(static_cast<int>(strA[i])-48);
+    }
+    cout << "Please enter the second number: " << endl;//input second num
+    
+    cin >> strB;
+    for(int i = 0; i < strB.size(); i++)
+    {
+        num2.push_back(static_cast<int>(strB[i])-48);//fill vector 2
+    }
+    cout << "1--------"<<endl;
+    Display(num1);
+    cout << "\n2--------"<<endl;
+    Display(num2);
+    Add(num1, num2, ans);
+    cout << "3--------"<<endl;
+    Display(ans);
     
 }
