@@ -63,7 +63,6 @@ vector<int> Add(vector<int> num1, vector<int> num2)
             if(ans[j] >= 10)
             {
                 carryBit = ans[j]/10;
-		cout << "CARRY BIT IS: " << carryBit << "\n";
                 ans[j] = ans[j]-10;
                 ans[j-1] = ans[j-1]+carryBit;
             }
