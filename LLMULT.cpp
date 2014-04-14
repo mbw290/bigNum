@@ -19,12 +19,14 @@ class Link
   public:
    bigNum *bNum;
    Link *Next;
+   Link *Last;
 };
 
 class LinkedList
 {
   private:
-    Link *First;
+    Link *First;	
+    Link *Last;
   public:
     LinkedList()
     {
@@ -79,6 +81,24 @@ class LinkedList
     delete current->bNum;
     delete current;
   } 
+
+
+	vector<int> pop()
+        {
+        vector<int> val = First->bNum->list; // store value to return
+        Link *temp = First; // remove card from deck
+        if(First == Last)
+        {
+            First = NULL;
+            Last = NULL;
+        }
+        else
+            First = First->Next;
+        delete temp;
+        return val; //card goes into play
+        }
+
+
 };
 
 vector<int> Add(vector<int> num1, vector<int> num2)
@@ -143,14 +163,20 @@ void Display(vector<int> v)
 }
 
 
-
-
 class Multiply
 {
 public:
 	vector<int> multiply(vector<int> num1, vector<int> num2)
 	{
-	vector<int> vResult;
+		vector<int> temp1,temp2;
+	
+        	if(num1.size() > num2.size())
+    		{
+        	num1=temp1;num2=temp2;
+		num1=temp2;
+		num2=temp1;
+    		}
+	vector<int> vResult,ans,ans1,ans2;
 	int res,min,max,count;
 	int jcount=0;
 	int icount=0;
@@ -158,28 +184,30 @@ public:
 	vector<int> temp;
 		for (int i=0; i<num1.size();i++)
         	{
+			
+				if (i>0)
+				{
+					for (int z=0; z<i;z++)
+					{
+					temp.insert(temp.begin(),0);
+					}
+				}
                 	for (int j=0;j<num2.size();j++)
                 	{
 			cout << num1[i] << " times " << num2[j] << "\n";
                 	res=num1[i]*num2[j];
-				if (i>0)
-				{
-				res=res*pow(10,icount);
-				icount++;
-				}
-				if (i==0)
-				{
-					if (j>0)
-					{
-					res=res*pow(10,jcount);
-					jcount++;
-					}
-				}
-			temp.push_back(res);
+			temp.insert(temp.begin(),res);
                 	}
 		LL.AddList(temp);
+		count++;
+		temp.clear();
         	}
-	return temp;
+		ans=LL.pop();
+		for (int k=0;k<count-1;k++)
+		{
+		ans=Add(ans,LL.pop());
+		}
+	return ans;
 	}
 
 	void Display(vector<int> v)
@@ -191,9 +219,10 @@ public:
     		for(int i = 0; i < v.size(); i++)
     		{
 		result=v[i];
-		cout << result <<"\n";
-        	ostr<<result;
+		cout << result;
+        	//ostr<<result;
     		}
+	cout << "DONE" << "\n";
 	}	
 };
 int main()
@@ -201,11 +230,17 @@ int main()
 vector<int> v1;
 vector<int> v2;
 vector<int> result;
-v1.insert(v1.begin(),1);
-v1.insert(v1.begin(),0);
-v1.insert(v1.begin(),0);
-v2.insert(v2.begin(),2);
-v2.insert(v2.begin(),3);
+
+v1.push_back(0);
+v1.push_back(0);
+v1.push_back(0);
+v1.push_back(2);
+v1.push_back(1);
+v2.push_back(3);
+v2.push_back(2);
+v2.push_back(6);
+v2.push_back(2);
+v2.push_back(2);
 Multiply m;
 result=m.multiply(v1,v2);
 m.Display(result);
