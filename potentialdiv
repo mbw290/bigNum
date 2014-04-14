@@ -1,0 +1,56 @@
+// Division...Completed...
+INT operator/(const INT& x, const INT& y)
+{	INT result,temp_product,temp_extracted,temp_quotient,temp_dif,guess,temp_constant;
+int x_init_pos=0,y_init_pos=0,sizex,sizey,p=0;
+//to find how big x is and y is.
+for(int b=0;x.digits[b]==0;b++)	 x_init_pos++;
+for(b=0;y.digits[b]==0;b++)	 y_init_pos++;	
+//to determine the sign of the result
+sizey=100-y_init_pos;
+sizex=100-x_init_pos;
+for(int a=0;a<sizey;a++)	
+temp_extracted.digits[y_init_pos+a]=x.digits[x_init_pos+a];
+
+for(int c=0;c<=sizex-sizey;c++)
+{	
+guess.digits[99]=9;
+temp_product=y*guess;
+if(temp_product.sign=='n')
+temp_product.sign='p';
+temp_dif=temp_extracted-temp_product;
+
+if(temp_dif.sign=='n')	p=1;
+
+if(p == 1)	{
+while(p==1){	
+guess.digits[99]=guess.digits[99]-1;
+temp_product=guess*y;
+if(temp_product.sign=='n')	 temp_product.sign='p';
+temp_dif=temp_extracted-temp_product;
+
+if(temp_dif.sign=='n')	{	INT temp_dif;	p=1;	}
+else	p=0;
+}
+}
+temp_quotient.digits[100-(sizex-sizey)+c-1]=guess.digits[99];
+for( int e = 0; temp_dif.digits[e] == 0 && e < 99; e++ )
+{}
+INT shifted_value;
+if(e==100&&temp_dif.digits[99]==0)	{
+e=99;
+shifted_value.digits[99]=0;
+}
+for(int shift_value = e-1,m=0;shift_value<99;shift_value++,m++)	{
+shifted_value.digits[shift_value]=temp_dif.digits[e+m];
+}
+shifted_value.digits[99]=x.digits[100-(sizex-sizey)+c];
+
+for(int h=0;h<100;h++)
+temp_extracted.digits[h]=shifted_value.digits[h];
+}
+for(int k=0;k<100;k++)
+result.digits[k]=result.digits[k]+temp_quotient.digits[k];
+if(x.sign!=y.sign)
+result.sign = 'n';
+return result;
+}
