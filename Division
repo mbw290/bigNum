@@ -1,71 +1,105 @@
 #include<iostream>
+#include <sstream>
+#include <math.h>
 #include <stdio.h>
 #include <string>
 #include <vector>
 using namespace std;
-vector<int> Multiply(vector<int>, vector<int>);
-void Display(vector<int>);
-void Divide(vector<int>, vector<int>);
-bool check(vector<int>, vector<int>);
-vector<int> Add(vector<int>, vector<int>);
-vector<int> Subtract(vector<int>, vector<int>);
-
+vector<int> input();
 class bigNum
 {
 public:
-    int digit;
+    vector<int> list;
 };
-bool check(vector<int> num1, vector<int> num2)
-{
-    bool test;
-    if(num1.size() !=0 || num2.size()!= 0)
-    {test = true;}
-    else
-    {test = false;}
-    return test;
-}
 
-vector<int> Subtract(vector<int> num1, vector<int> num2)
+//we need a link to point to the puppy and the next item
+//something to hold the list and methods to add to the list and remove etc.
+class Link
 {
-    vector<int> ans;
-    int difference;
-    unsigned long max;
-    if(num1.size() > num2.size())
+public:
+    bigNum *bNum;
+    Link *Next;
+    Link *Last;
+};
+
+class LinkedList
+{
+private:
+    Link *First;
+    Link *Last;
+public:
+    LinkedList()
     {
-        max = num1.size();
+        First = NULL;
     }
-    else
+    
+    void AddList(vector<int> x)
     {
-        max = num2.size();
+        Link *newLink = new Link;
+        bigNum *newNum = new bigNum;
+        //bignum pointer is now pointing to our new bignum
+        newLink->bNum=newNum;
+        newNum->list=x;
+        newLink->Next=First; //makes next null
+        First=newLink;
     }
-    for(int i = 0; i < max; i++)
+    
+    void AddListEnd(vector<int> x)
     {
-        if(num1.size() < num2.size())
+        Link *lastItem=new Link;
+        Link *newNode=new Link;
+        bigNum *newNum = new bigNum;
+        lastItem=First;
+        while (lastItem->Next != NULL)
         {
-            num1.insert(num1.begin(), 0);
+            lastItem=lastItem->Next;
         }
-        if(num2.size() < num1.size())
-        {
-            num2.insert(num2.begin(), 0);
-        }
-        difference = num1.at(i) - num2.at(i);
-        if(difference < 0)
-        {
-            if(i == 0)
-            {
-                ans.push_back(difference);
-            }
-            else
-            {
-                difference+=10;
-                ans.at(i-1)--;
-                ans.push_back(difference);
-            }
-        }
-      
+        lastItem->Next=newNode;
+        newNode->bNum=newNum;
+        newNum->list=x;
+        newNode->Next=NULL;
     }
-    return ans;
-}
+    
+    void RemoveList()
+    {
+        delete First->bNum;
+        First=First->Next;
+    }
+    
+    void RemoveLList(LinkedList LL)
+    {
+        Link *current=new Link;
+        Link *temp = new Link;
+        current=First;
+        while (current != NULL)
+        {
+            temp=current->Next;
+            delete current->bNum;
+            delete current;
+            current=temp;
+        }
+        delete current->bNum;
+        delete current;
+    }
+    
+    
+	vector<int> pop()
+    {
+        vector<int> val = First->bNum->list; // store value to return
+        Link *temp = First; // remove card from deck
+        if(First == Last)
+        {
+            First = NULL;
+            Last = NULL;
+        }
+        else
+            First = First->Next;
+        delete temp;
+        return val; //card goes into play
+    }
+    
+    
+};
 
 vector<int> Add(vector<int> num1, vector<int> num2)
 {
@@ -80,7 +114,7 @@ vector<int> Add(vector<int> num1, vector<int> num2)
     {
         max = num2.size();
     }
-//negative numbers?
+    //negative numbers?
     for(int i = 0; i < max; i++)
     {
         if(num1.size() < num2.size())
@@ -120,61 +154,6 @@ vector<int> Add(vector<int> num1, vector<int> num2)
     return ans;
 }
 
-
-void Divide(vector<int> num1, vector<int> num2)
-{
-    vector<int> ans, hold1, hold2;
-    int rem,quotient, res,dig, num;
-    res = 0;
-    int size = num1.size();
-    quotient = 0;
-    
-    if(num2.size() > num1.size())
-    {
-        ans.push_back(0);
-    }
-    else if(num2.size() == num1.size() && num2[0] > num1[0])
-    {
-        ans.push_back(0);
-    }
-    else
-    {
-        while(size>0)
-        {
-        for(int i = num2.size()+1; i >0; i--)
-        {
-            dig = num1[i] * (10^quotient++);
-            num += dig;
-        }
-    
-        for(int j = num2.size(); j >0; j--)
-        {
-            dig = num2[j] * (10^res++);
-            num += dig;
-            //hold2.push_back(num);
-        }
-            hold1.push_back(num);
-            size -= num2.size();
-        }
-        /*for(int k = 0; k < hold1.size(); k++)
-        {
-            while(res > hold1[k])
-            {
-                res = hold1[k]-hold2[k];
-            }
-        }*/
-    }
-    for(int p = 0; p < hold1.size(); p++)
-    {
-        cout <<"1: " << hold1[p] << ", " << endl;
-    }
-    for(int r = 0; r < hold2.size(); r++)
-    {
-        cout << "2: " << hold2[r] << ", " << endl;
-    }
-    
-}
-
 void Display(vector<int> v)
 {
     for(int i = 0; i < v.size(); i++)
@@ -184,95 +163,185 @@ void Display(vector<int> v)
 }
 
 
-
-
-vector<int> Multiply(vector<int> num1, vector<int> num2)
+class Multiply
 {
-    vector <vector<int>> list;
-    vector<int> ans;
-    vector<int> prod;
-    int result;
-    for (int i = 0; i < num1.size(); i++)
-    {
-        prod.clear();
-        for(int j = 0; j < num2.size(); j++)
+public:
+	vector<int> multiply(vector<int> num1, vector<int> num2)
+	{
+		vector<int> temp1,temp2;
+        
+        if(num1.size() > num2.size())
         {
-            result = num1.at(i) * num2.at(j);
-            prod.push_back(result);
+        	num1=temp1;num2=temp2;
+            num1=temp2;
+            num2=temp1;
         }
-        /*for(int k = 0; k < i; k++)
+        vector<int> vResult,ans,ans1,ans2;
+        int res,min,max,count;
+        int jcount=0;
+        int icount=0;
+        LinkedList LL;
+        vector<int> temp;
+		for (int i=0; i<num1.size();i++)
         {
-            prod.push_back(0);
-        }*/
-        Display(prod);
-        list.insert(list.begin(),prod);
-        
-    }
+			
+            if (i>0)
+            {
+                for (int z=0; z<i;z++)
+                {
+					temp.insert(temp.begin(),0);
+                }
+            }
+            for (int j=0;j<num2.size();j++)
+            {
+                cout << num1[i] << " times " << num2[j] << "\n";
+                res=num1[i]*num2[j];
+                temp.insert(temp.begin(),res);
+            }
+            LL.AddList(temp);
+            count++;
+            temp.clear();
+        }
+		ans=LL.pop();
+		for (int k=0;k<count-1;k++)
+		{
+            ans=Add(ans,LL.pop());
+		}
+        return ans;
+	}
     
-    for(int p = 0; p < list.size()-1; p++)
+	void Display(vector<int> v)
+	{
+        
+        std::ostringstream ostr;
+        int result;
+        string printme;
+        for(int i = 0; i < v.size(); i++)
+        {
+            result=v[i];
+            cout << result;
+        	//ostr<<result;
+        }
+        cout << "DONE" << "\n";
+	}
+};
+
+bool isBigger(vector<int> v1, vector<int> v2)
+{
+    bool big = false;
+    if(v1.size() > v2.size())
     {
-       if(p == 0)
-       {
-          ans = Add(list.at(0), list.at(1));
-       }
-       else
-       {
-        ans = Add(ans, list.at(p+1));
-       }
-        
+        big = true;
     }
-    
-    return ans;
+    else if(v1.size() == v2.size())
+    {
+        for(int i = 0; i < v1.size(); i++)
+        {
+            if(v1[i] > v2[i])
+            {
+                big = true;
+            }
+            else if(v1[i] < v2[i])
+            {
+                big = false;
+            }
+        }
+    }
+    else
+    {
+        big = false;
+    }
+    return big;
 }
 
+LinkedList Divide(vector<int> v1,vector<int> v2)//make this return a linked list. first node is quotient, second node is the remainder
+{
+   LinkedList ans;
+    vector<int> temp = v2;
+    vector<int> result;
+    int quotient;
+    vector<int> remainder;
+    while(!(isBigger(v2,v1)))//while v2 is not bigger than v1, add original v2 to v2
+    {
+        v2 = Add(v1,v2);
+        quotient++;
+    }
+    remainder = Subtract(v2, temp); // import Subtract method
+    return ans;
+}
+vector<int> input()
+{
+    vector<int> input;
+    string str;
+    cout << "Please enter your number"<<endl;
+    cin >> str;
+    for(int i = 0; i < str.size(); i++)
+    {
+        input.push_back(static_cast<int> (str[i]));
+    }
+    return input;
+}
 int main()
 {
-    string strA, strB;
     char oper;
-    int enter1,enter2;
-    vector<int> num1, num2, ans; //num1 vector, num2 vector, answer vector
-    
-    cout << "Please enter the first number: " << endl;//input first num
-    cin >> strA;
-    for(int i = 0; i < strA.size(); i++)
-    {
-        enter1=(int)strA[i]-48;
-        num1.push_back(enter1);
-    }
-    cout << "Please enter the second number: " << endl;//input second num
-    cin >> strB;
-    for(int i = 0; i < strB.size(); i++)
-    {
-        enter2=(int)strB[i]-48;
-        num2.push_back(enter2);//fill vector 2
-    }
-    cout << "Please choose an operator (+, -, /, *) " << endl;
+    string input2;
+    vector<int> v1;
+    vector<int> v2;
+    vector<int> result;
+    cout << "Which operation do you wish to perform (+,-,*,/)" << endl;
     cin >> oper;
-    
+    Multiply m;
     switch(oper)
     {
-            case '+':
-                Add(num1, num2);
-                break;
-            case '-':
-                Subtract(num1, num2);
-                break;
-            case '*':
-                Multiply(num1,num2);
-                break;
-            case '/':
-                Divide(num1, num2);
-                break;
-            default:
-            cout << "Command not recognized" << endl;
-                break;
+        case '+':
+            cout << "First number\n";
+            v1 = input();
+            cout << "Second number\n";
+            v2 = input();
+            Add(v1,v2);
+            
+        case '-':
+            cout << "First number\n";
+            v1 = input();
+            cout << "Second number\n";
+            v2 = input();
+         // Subtract(v1,v2);
+        case '*':
+            cout << "First number\n";
+            v1 = input();
+            cout << "Second number\n";
+            v2 = input();
+            m.multiply(v1,v2);
+        case '/':
+            cout << "First number\n";
+            v1 = input();
+            cout << "Second number\n";
+            v2 = input();
+            //Divide(v1,v2);
     }
-    // cout << "1--------"<<endl;
-   // Display(num1);
-   // cout << "\n2--------"<<endl;
-   // Display(num2);
-   // cout << "\n3--------"<<endl;
-    cout << "\n";
+
     
-    Display(ans);
-    cout << "\n";
+
+    
+    /*v1.push_back(0);
+     v1.push_back(0);
+     v1.push_back(0);
+     v1.push_back(2);
+     v1.push_back(1);
+     v2.push_back(3);
+     v2.push_back(2);
+     v2.push_back(6);
+     v2.push_back(2);
+     v2.push_back(2);*/
+    
+   /* if(isBigger(v1,v2))
+    {
+        result=m.multiply(v1,v2);
+    }
+    else
+    {
+        result = m.multiply(v2,v1);
+    }
+    m.Display(result);*/
+    return 0;
+}
