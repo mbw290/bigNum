@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <cstdio>
+#include <ctime>
+
 using namespace std;
 /* Matthew Wimpelberg and Rob Mancuso
  * Aribitrary Precision Calculator
@@ -329,7 +332,7 @@ LinkedList Divide(vector<int> v1,vector<int> v2)//make this return a linked list
     int quotient;
     vector<int> quot;
     vector<int> remainder;
-    while(!(isBigger(v2,v1)))//while v2 is not bigger than v1, add original v2 to v2
+    while(isBigger(v1,v2))//while v2 is not bigger than v1, add original v2 to v2
     {
         v2 = Add(v1,v2);
         quotient++;
@@ -365,6 +368,14 @@ vector<int> v1=input();
 vector<int> v2=input();
 vector<int> result;
 char oper;
+
+std::clock_t start;
+    double duration;
+
+    start = std::clock();
+
+
+
 cout << "Which operation do you wish to perform (+,-,*,/)" << endl;
     cin >> oper;
     LinkedList div;
@@ -388,6 +399,10 @@ cout << "Which operation do you wish to perform (+,-,*,/)" << endl;
 
 
 Display(result);
+    duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+
+    std::cout<<"This took "<< duration <<'\n';
+
 cout << "\n";
 return 0;
 }
