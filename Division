@@ -260,6 +260,7 @@ LinkedList Divide(vector<int> v1,vector<int> v2)//make this return a linked list
     vector<int> temp = v2;
     vector<int> result;
     int quotient;
+    vector<int> quot;
     vector<int> remainder;
     while(!(isBigger(v2,v1)))//while v2 is not bigger than v1, add original v2 to v2
     {
@@ -267,6 +268,10 @@ LinkedList Divide(vector<int> v1,vector<int> v2)//make this return a linked list
         quotient++;
     }
     remainder = Subtract(v2, temp); // import Subtract method
+    quot.push_back(--quotient);
+    ans.AddList(quot);
+    ans.AddList(remainder);
+    
     return ans;
 }
 vector<int> input()
@@ -291,6 +296,7 @@ int main()
     cout << "Which operation do you wish to perform (+,-,*,/)" << endl;
     cin >> oper;
     Multiply m;
+    LinkedList div;
     switch(oper)
     {
         case '+':
@@ -317,7 +323,9 @@ int main()
             v1 = input();
             cout << "Second number\n";
             v2 = input();
-            //Divide(v1,v2);
+            div = Divide(v1,v2);
+        default: exit(1);
+            
     }
 
     
@@ -334,7 +342,7 @@ int main()
      v2.push_back(2);
      v2.push_back(2);*/
     
-   /* if(isBigger(v1,v2))
+    if(isBigger(v1,v2))
     {
         result=m.multiply(v1,v2);
     }
@@ -342,6 +350,6 @@ int main()
     {
         result = m.multiply(v2,v1);
     }
-    m.Display(result);*/
+    m.Display(result);
     return 0;
 }
