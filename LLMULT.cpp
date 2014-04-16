@@ -213,7 +213,7 @@ vector<int> Add(vector<int> num1, vector<int> num2)
 
 void Display(vector<int> v)
 {
-    for(int i = 0; i < v.size(); i++)
+    for(int i = 0; i<v.size(); i++)
     {
         cout << v[i];
     }
@@ -312,6 +312,10 @@ vector<int> Subtract(vector<int> num1, vector<int> num2)
                 ans.push_back(difference);
             }
         }
+	else
+	{
+	ans.push_back(difference);
+	}
       
     }
     return ans;
@@ -343,9 +347,13 @@ vector<int> input()
     string str;
     cout << "Please enter your number"<<endl;
     cin >> str;
+    int addme;
     for(int i = 0; i < str.size(); i++)
     {
-        input.push_back(static_cast<int> (str[i]));
+	addme=(int)str[i];
+	addme=addme-48;
+	cout << addme << "\n";
+        input.push_back(addme);
     }
     return input;
 }
@@ -353,23 +361,32 @@ vector<int> input()
 
 int main()
 {
-vector<int> v1;
-vector<int> v2;
+vector<int> v1=input();
+vector<int> v2=input();
 vector<int> result;
-LinkedList ll;
-v1.push_back(0);
-v1.push_back(0);
-v1.push_back(0);
-v1.push_back(2);
-v1.push_back(1);
-v2.push_back(3);
-v2.push_back(2);
-v2.push_back(6);
-v2.push_back(2);
-v2.push_back(2);
-v2.push_back(2);
-result = multiply(v2,v1);
-ll=Divide(v2,v1);
+char oper;
+cout << "Which operation do you wish to perform (+,-,*,/)" << endl;
+    cin >> oper;
+    LinkedList div;
+    switch(oper)
+    {
+        case '+':
+            result=Add(v1,v2);
+            break;
+        case '-':
+            result=Subtract(v1,v2);
+	    break;
+        case '*':
+            result=multiply(v1,v2);
+	    break;
+		
+        case '/':
+                div = Divide(v1,v2);
+		div.llDisplay();
+        default: return(1);                                                                             
+     }
+
+
 Display(result);
 cout << "\n";
 return 0;
