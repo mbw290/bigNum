@@ -9,6 +9,8 @@ using namespace std;
  * Aribitrary Precision Calculator
 */ 
 
+void Display(vector<int>);
+
 //Linked list of integers that when combined will form a big number entered by the user
 class bigNum
 {
@@ -109,9 +111,49 @@ Link *temp = First; // remove card from deck
         delete temp;
         return val; //card goes into play
         }
+ void llDisplay() 
+  { 
+   Link *current=First; 
+   while (current != NULL) 
+   { 
+     Display(current->bNum->list);
+     current = current->Next; 
+   } 
+  }
 
 
 };
+
+
+
+bool isBigger(vector<int> v1, vector<int> v2)
+{
+    bool big = false;
+    if(v1.size() > v2.size())
+    {
+        big = true;
+    }
+    else if(v1.size() == v2.size())
+    {
+        for(int i = 0; i < v1.size(); i++)
+        {
+            if(v1[i] > v2[i])
+            {
+                big = true;
+            }
+            else if(v1[i] < v2[i])
+            {
+                big = false;
+            }
+        }
+    }
+    else
+    {
+        big = false;
+    }
+    return big;
+}
+
 
 
 //Feed in two integer vectors of big numbers and return the sum in a vector
@@ -183,11 +225,12 @@ void Display(vector<int> v)
 	{
 		vector<int> temp1,temp2;
 	        //Find the larger number
-        	if(num1.size() > num2.size())
+	        bool big=isBigger(num1,num2);
+        	if(big==true)
     		{
-        	num1=temp1;num2=temp2;
-		num1=temp2;
+        	temp1=num1;temp2=num2;
 		num2=temp1;
+		num1=temp2;
     		}
 	//Setup vectors to hold answer
 	vector<int> ans;
@@ -231,6 +274,81 @@ void Display(vector<int> v)
 	return ans;
 	}
 
+vector<int> Subtract(vector<int> num1, vector<int> num2)
+{
+    vector<int> ans;
+    int difference;
+    unsigned long max;
+    bool big = isBigger(num1,num2);
+    if(big==true)
+    {
+        max = num1.size();
+    }
+    else
+    {
+        max = num2.size();
+    }
+    for(int i = 0; i < max; i++)
+    {
+        if(num1.size() < num2.size())
+        {
+            num1.insert(num1.begin(), 0);
+        }
+        if(num2.size() < num1.size())
+        {
+            num2.insert(num2.begin(), 0);
+        }
+        difference = num1.at(i) - num2.at(i);
+        if(difference < 0)
+        {
+            if(i == 0)
+            {
+                ans.push_back(difference);
+            }
+            else
+            {
+                difference+=10;
+                ans.at(i-1)--;
+                ans.push_back(difference);
+            }
+        }
+      
+    }
+    return ans;
+}
+
+LinkedList Divide(vector<int> v1,vector<int> v2)//make this return a linked list. first node is quotient, second node is the remainder
+{
+    LinkedList ans;
+    vector<int> temp = v2;
+    vector<int> result;
+    int quotient;
+    vector<int> quot;
+    vector<int> remainder;
+    while(!(isBigger(v2,v1)))//while v2 is not bigger than v1, add original v2 to v2
+    {
+        v2 = Add(v1,v2);
+        quotient++;
+    }
+    remainder = Subtract(v2, temp); // import Subtract method
+    quot.push_back(--quotient);
+    ans.AddList(quot);
+    ans.AddList(remainder);
+    
+    return ans;
+}
+vector<int> input()
+{
+    vector<int> input;
+    string str;
+    cout << "Please enter your number"<<endl;
+    cin >> str;
+    for(int i = 0; i < str.size(); i++)
+    {
+        input.push_back(static_cast<int> (str[i]));
+    }
+    return input;
+}
 
 
 int main()
@@ -238,7 +356,7 @@ int main()
 vector<int> v1;
 vector<int> v2;
 vector<int> result;
-
+LinkedList ll;
 v1.push_back(0);
 v1.push_back(0);
 v1.push_back(0);
@@ -249,7 +367,10 @@ v2.push_back(2);
 v2.push_back(6);
 v2.push_back(2);
 v2.push_back(2);
-result=multiply(v2,v1);
+v2.push_back(2);
+result = multiply(v2,v1);
+ll=Divide(v2,v1);
 Display(result);
+cout << "\n";
 return 0;
 }
