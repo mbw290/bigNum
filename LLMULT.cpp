@@ -9,7 +9,7 @@
 
 using namespace std;
 /* Matthew Wimpelberg and Rob Mancuso
- * Aribitrary Precision Calculator
+ * Arbitrary Precision Calculator
 */ 
 
 void Display(vector<int>);
@@ -128,7 +128,7 @@ Link *temp = First; // remove card from deck
 };
 
 
-
+//Check which number is bigger to make sure that the algorithms perform the proper operations based on larger and smaller numbers
 bool isBigger(vector<int> v1, vector<int> v2)
 {
     bool big = false;
@@ -279,9 +279,10 @@ void Display(vector<int> v)
 
 vector<int> Subtract(vector<int> num1, vector<int> num2)
 {
-    vector<int> ans;
+    vector<int> ans,ans1;
     int difference;
     unsigned long max;
+	//Check for larger number
     bool big = isBigger(num1,num2);
     if(big==true)
     {
@@ -291,6 +292,7 @@ vector<int> Subtract(vector<int> num1, vector<int> num2)
     {
         max = num2.size();
     }
+	//Fill the smaller numbers with 0 for ease
     for(int i = 0; i < max; i++)
     {
         if(num1.size() < num2.size())
@@ -302,6 +304,7 @@ vector<int> Subtract(vector<int> num1, vector<int> num2)
             num2.insert(num2.begin(), 0);
         }
         difference = num1.at(i) - num2.at(i);
+	//If the difference is < 0 we need to carry by adding 10 and removing 10 from the previous term
         if(difference < 0)
         {
             if(i == 0)
@@ -315,11 +318,17 @@ vector<int> Subtract(vector<int> num1, vector<int> num2)
                 ans.push_back(difference);
             }
         }
+	//If its not less than 0 just push it
 	else
 	{
 	ans.push_back(difference);
 	}
       
+    }
+    if (ans[0] <0)
+    {
+	cout << "THIS CALCULATOR DOES NOT HANDLE NEGATIVES" << "  PLEASE REVERSE THE ORDER OF YOUR NUMBERS \n";
+	return ans1;
     }
     return ans;
 }
@@ -355,17 +364,31 @@ vector<int> input()
     {
 	addme=(int)str[i];
 	addme=addme-48;
-	cout << addme << "\n";
         input.push_back(addme);
     }
     return input;
 }
 
+vector<int> minput()
+{
+    vector<int> input;
+    string str;
+    cout << "Please enter your number"<<endl;
+    cin >> str;
+    int addme;
+    for(int i = 0; i < str.size(); i++)
+    {
+	addme=(int)str[i];
+	addme=addme-48;
+        input.insert(input.begin(),addme);
+    }
+    return input;
+}
 
 int main()
 {
-vector<int> v1=input();
-vector<int> v2=input();
+vector<int> v1;
+vector<int> v2;
 vector<int> result;
 char oper;
 
@@ -382,12 +405,20 @@ cout << "Which operation do you wish to perform (+,-,*,/)" << endl;
     switch(oper)
     {
         case '+':
+	    v1=input();
+	    v2=input();
             result=Add(v1,v2);
             break;
         case '-':
+	
+	    v1=input();
+	    v2=input();
             result=Subtract(v1,v2);
 	    break;
         case '*':
+	    v1=minput();
+	    v2=minput();
+
             result=multiply(v1,v2);
 	    break;
 		
