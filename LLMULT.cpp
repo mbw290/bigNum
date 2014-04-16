@@ -197,18 +197,28 @@ vector<int> Add(vector<int> num1, vector<int> num2)
 
     for(unsigned long j = ans.size(); j > 0; j--)
     {
-        if(j == 0)
-        {
+      if(j == 0)
+          {
             if(ans[j] >= 10)
-            {
+             {
+                 carryBit = ans[j]/10;
+                 ans[j] = ans[j]-10;
+ 		ans[j-1]=ans[j-1]+carryBit;
+                // ans.insert(ans.begin(), carryBit);
+              }
+          }
+          else
+         {
+            if(ans[j] >= 10)
+              {
                 carryBit = ans[j]/10;
+		cout << "CARRY BIT IS: " << carryBit << "\n";
                 ans[j] = ans[j]-10;
-                ans[j-1]=ans[j-1]+carryBit;
-                ans.insert(ans.begin(), carryBit);
-            }
-        }
-     
-    }
+                ans[j-1] = ans[j-1]+carryBit;
+              }
+          } 
+       }
+
     return ans;
 }
 
@@ -402,6 +412,7 @@ std::clock_t start;
 cout << "Which operation do you wish to perform (+,-,*,/)" << endl;
     cin >> oper;
     LinkedList div;
+
     switch(oper)
     {
         case '+':
@@ -409,8 +420,7 @@ cout << "Which operation do you wish to perform (+,-,*,/)" << endl;
 	    v2=input();
             result=Add(v1,v2);
             break;
-        case '-':
-	
+        case '-':	
 	    v1=input();
 	    v2=input();
             result=Subtract(v1,v2);
@@ -427,7 +437,6 @@ cout << "Which operation do you wish to perform (+,-,*,/)" << endl;
 		div.llDisplay();
         default: return(1);                                                                             
      }
-
 
 Display(result);
     duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
